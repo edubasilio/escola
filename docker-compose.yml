@@ -1,0 +1,40 @@
+version: "3.8"
+
+networks:
+    escola_net:
+        driver: bridge
+services:
+    web:
+        env_file: ./.env
+        image: escola/web
+        build:
+            context: ./escola
+        container_name: escola_web
+        networks:
+            - escola_net
+        
+        command: >
+            sh -c "pwd &&
+            pipenv run ./manage.py migrate &&
+            pipenv run ./manage.py runserver 0:8000
+            "
+        volumes:
+            - ./escola:/app/escola
+    proxy:
+        env_file: ./.env
+        image: escola/proxy
+        build:
+            context: ./proxy
+        container_name: escola_proxy
+        networks:
+            - escola_net
+        ports:
+            - "${HOST_HTTP_PORT}:80"
+        environment:
+            - NGINX_PORT=80
+        volumes: 
+            - ${STATICFILES_PATH}:/escola/staticfiles
+            - ${MEDIA_PATH}:/escola/media
+        depends_on: 
+            - web
+    
