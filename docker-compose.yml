@@ -4,24 +4,46 @@ networks:
     escola_net:
         driver: bridge
 services:
+    db:
+        env_file: ./escola/.env
+        image: postgres:alpine
+        restart: always
+        container_name: escola_db
+        networks:
+            - escola_net
+        environment: 
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_NAME}
+            - POSTGRES_USER=${DB_USER}  
+        volumes:
+            - ${DB_DATA_PATH}:/var/lib/postgresql/data
     web:
-        env_file: ./.env
+        env_file: ./escola/.env
         image: escola/web
         build:
             context: ./escola
         container_name: escola_web
         networks:
             - escola_net
-        
+        ports:
+            - 8000:8000
         command: >
             sh -c "pwd &&
             pipenv run ./manage.py migrate &&
+            pipenv run ./manage.py collectstatic --noinput &&
+            pipenv run gunicorn -D -b 0:80 -w ${GUNICORN_WORKERS} -p /tmp/gunicorn_escola.pid escola.wsgi:application && 
             pipenv run ./manage.py runserver 0:8000
             "
         volumes:
             - ./escola:/app/escola
+            - ${STATICFILES_PATH}:/app/staticfiles
+            - ${MEDIA_PATH}:/app/media
+        depends_on:
+            - db
+        links: 
+            - db
     proxy:
-        env_file: ./.env
+        env_file: ./escola/.env
         image: escola/proxy
         build:
             context: ./proxy
@@ -37,4 +59,3 @@ services:
             - ${MEDIA_PATH}:/escola/media
         depends_on: 
             - web
-    

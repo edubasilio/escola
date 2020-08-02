@@ -1,6 +1,6 @@
 
 upstream web {
-    server web:8000;
+    server web:80;
 }
 
 server {
@@ -9,12 +9,12 @@ server {
 
     access_log  /var/log/nginx/escola.log  main;
 
-    location /static {
-        alias /escola/staticfiles;
+    location ${STATIC_URL} {
+        alias /escola/staticfiles/;
     }
 
-    location /media {
-        alias /escola/media;
+    location ${MEDIA_URL} {
+        alias /escola/media/;
     }
 
     location / {

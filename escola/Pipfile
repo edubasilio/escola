@@ -9,6 +9,8 @@ verify_ssl = true
 bpython = "*"
 djangorestframework-simplejwt = "*"
 gunicorn = "*"
+python-decouple = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.8"

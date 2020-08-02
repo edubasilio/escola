@@ -11,21 +11,35 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sys
+
+from decouple import config
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# Root directory for apps
+APPS_DIR = os.path.join(BASE_DIR, 'apps')
+sys.path.insert(0, APPS_DIR)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+p1-v2)-1mgln%m2&_3bxkszjx^89g3jbonf(kz1o605n=b7-&'
+SECRET_KEY = config('SECRET_KEY')
+
+
+# MULTISTAGE VALUES: LOCAL, DEV, STAG OR PROD
+MULTISTAGE = config("MULTISTAGE", default="PROD")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if MULTISTAGE == "PROD" or MULTISTAGE == "STAG" else True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(' ')])
 
 
 # Application definition
@@ -74,9 +88,13 @@ WSGI_APPLICATION = 'escola.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": config("DB_ENGINE"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST", default='db'),
+        "PORT": config("DB_PORT"),
     }
 }
 
@@ -103,9 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config("TIME_ZONE", default="America/Sao_Paulo")
 
 USE_I18N = True
 
@@ -117,4 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = config('STATIC_URL')
+STATIC_ROOT = "/app/staticfiles/"
+
+MEDIA_URL = config('MEDIA_URL')
+MEDIA_ROOT = "/app/media/"
+
+print("MULTISTAGE: ", MULTISTAGE)
+print("DEBUG: ", DEBUG)
