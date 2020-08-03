@@ -5,7 +5,7 @@ upstream web {
 
 server {
     listen ${NGINX_PORT};
-    server_name  ${ALLOWED_HOSTS};
+    server_name *${ALLOWED_HOSTS};
 
     access_log  /var/log/nginx/escola.log  main;
 
