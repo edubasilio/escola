@@ -1,3 +1,5 @@
+import six
+
 from filters.schema import base_query_params_schema
 from filters.validations import CSVofIntegers, IntegerLike
 
@@ -9,5 +11,13 @@ matriculas_query_schema = base_query_params_schema.extend(
         "curso_id": CSVofIntegers(),  # /?curso_id=1,2,3
         "aluno_id": CSVofIntegers(),  # /?aluno_id=1,2,3
         "turma_id": CSVofIntegers(),  # /?turma_id=1,2,3
+    }
+)
+
+alunos_query_schema = base_query_params_schema.extend(
+    {
+        "id": IntegerLike(),
+        "nome": six.text_type,
+        "cpf": six.text_type,
     }
 )
