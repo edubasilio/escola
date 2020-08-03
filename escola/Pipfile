@@ -14,6 +14,7 @@ psycopg2-binary = "*"
 domplus = "*"
 markdown = "*"
 django-filter = "*"
+drf-url-filters = "*"
 
 [requires]
 python_version = "3.8"
