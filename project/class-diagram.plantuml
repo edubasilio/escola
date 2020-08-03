@@ -1,0 +1,15 @@
+@startuml
+
+title escola class diagram
+
+
+package entity {
+    Matricula "*" *-- "1" Aluno
+    Matricula "*" *-- "1" Curso
+    Matricula "*" o-- "1" Turma
+    Turma "*" o-- "1" Sala
+    Turma "*" *-- "1" Curso
+}
+
+
+@enduml

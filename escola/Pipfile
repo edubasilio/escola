@@ -11,6 +11,9 @@ djangorestframework-simplejwt = "*"
 gunicorn = "*"
 python-decouple = "*"
 psycopg2-binary = "*"
+domplus = "*"
+markdown = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"

@@ -51,6 +51,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_filters',
+    'rest_framework',
+
+    'entidades.apps.EntidadesConfig',
 ]
 
 MIDDLEWARE = [
@@ -140,6 +145,10 @@ STATIC_ROOT = "/app/staticfiles/"
 
 MEDIA_URL = config('MEDIA_URL')
 MEDIA_ROOT = "/app/media/"
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 print("MULTISTAGE: ", MULTISTAGE)
 print("DEBUG: ", DEBUG)
