@@ -39,7 +39,7 @@ class MatriculaViewSet(FiltersMixin, viewsets.ModelViewSet):
     filter_validation_schema = matriculas_query_schema
     filter_mappings = {
         'id': 'id',
-        'curso_id': 'curso',
-        'turma_id': 'turma',
-        'aluno_id': 'aluno',
+        'curso': 'curso',
+        'turma': 'turma',
+        'aluno': 'aluno',
     }
