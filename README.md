@@ -189,7 +189,7 @@ Method: GET
 ```json
 {
     "codigo": "Codigo",
-    "curso": Integer
+    "curso": CursoID
 }
 ```
 
@@ -200,7 +200,7 @@ Method: GET
 ```json
 {
     "codigo": "Codigo",
-    "curso": Integer
+    "curso": CursoID
 }
 ```
 
