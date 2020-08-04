@@ -4,6 +4,31 @@ title escola class diagram
 
 
 package entity {
+    class Aluno {
+        CharField  nome
+        CharField cpf
+    }
+
+    class Sala {
+        CharField codigo
+        CharField lotacao
+    }
+
+    class Curso {
+        CharField nome
+    }
+
+    class Turma {
+        CharField codigo
+        Curso curso
+    }
+
+    class Matricula {
+        Curso curso
+        Aluno Aluno
+        Turma turma
+    }
+
     Matricula "*" *-- "1" Aluno
     Matricula "*" *-- "1" Curso
     Matricula "*" o-- "1" Turma
