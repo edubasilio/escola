@@ -15,8 +15,8 @@ services:
             - POSTGRES_PASSWORD=${DB_PASSWORD}
             - POSTGRES_DB=${DB_NAME}
             - POSTGRES_USER=${DB_USER}  
-        volumes:
-            - ${DB_DATA_PATH}:/var/lib/postgresql/data
+        # volumes:
+        #     - ${DB_DATA_PATH}:/var/lib/postgresql/data
     web:
         env_file: ./.env
         image: escola/web
