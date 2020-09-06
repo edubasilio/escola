@@ -4,15 +4,16 @@
 RETRIES=7
 while [ "$RETRIES" -gt 0 ]
 do
-  echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
+  echo "Waiting for postgres server, $RETRIES remaining attempts..."
+  RETRIES=$((RETRIES-1))
   PG_STATUS="$(pg_isready -h ${DB_HOST} -p 5432 -d ${DB_NAME} -U ${DB_USER})"
   PG_EXIT=$(echo $?)
   echo "Postgres Status: $PG_EXIT - $PG_STATUS"
-  if [ "$PG_EXIT" = "0" ];
-    then
+  if [ "$PG_EXIT" = "0" ]; then
       RETRIES=0
+  else
+      sleep 5
   fi
-  sleep 5
 done
 
 ### DJANGO MIGRATE AND COLLECT STATIC FILES ###
